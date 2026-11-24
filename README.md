@@ -34,7 +34,7 @@ Given the body of a news article, generate a short Ukrainian headline. The lab c
 | Saved notebook results on 500 articles | BERTScore precision | Recall | F1 |
 | --- | ---: | ---: | ---: |
 | GPT-2 with LoRA | 0.622 | 0.700 | 0.657 |
-| Qwen3-32B via Groq | 0.689 | 0.681 | 0.684 |
+| Qwen3.8-27B через Groq | 0.689 | 0.681 | 0.684 |
 
 **Run on Kaggle or Google Colab.** Select a GPU, and attach the prepared dataset. To use the published model, complete the setup through section 2.2, skip section 2.3, and select the Hugging Face loading cell in section 3 for `NLPForUA/gpt2-large-uk-title-generation`. If you trained your own adapter, select the local checkpoint cell instead and point it to your checkpoint. [Prepared Kaggle dataset](https://www.kaggle.com/datasets/niksyromyatnikov/fido-dataset)
 
