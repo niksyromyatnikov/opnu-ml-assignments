@@ -7,8 +7,8 @@ Three hands-on NLP assignments in Python Jupyter notebooks, with explanations an
 | Notebook | What you build | How you evaluate it |
 | --- | --- | --- |
 | [1. Part-of-speech tagging](part-of-speech-tagging-with-hmm/pos_hmm_task.ipynb) | A Viterbi decoder that assigns a grammatical tag to each word in English news text | Token-level tagging accuracy |
-| [2. Ukrainian news headline generation](lab2-news-title-generation-gpt2-lora/news-title-generation-gpt2-lora.ipynb) | A GPT-2 headline generator fine-tuned with LoRA, compared with a prompted Qwen model | BERTScore against the original headlines |
-| [3. Open-domain question answering](lab3-open-domain-question-answering/open-domain-question-answering.ipynb) | A Ukrainian question-answering system with FAISS passage retrieval and an mDeBERTa extractive reader | Exact match and token F1 on supplied and retrieved passages |
+| [2. Ukrainian news headline generation](2026-news-title-generation-gpt2-lora/news-title-generation-gpt2-lora.ipynb) | A GPT-2 headline generator fine-tuned with LoRA, compared with a prompted Qwen model | BERTScore against the original headlines |
+| [3. Open-domain question answering](2026-open-domain-question-answering/open-domain-question-answering.ipynb) | A question-answering system with FAISS passage retrieval and an mDeBERTa extractive reader | Exact match and token F1 on supplied and retrieved passages |
 
 ## 1. Part-of-speech tagging with a hidden Markov model
 
@@ -28,15 +28,15 @@ Given the body of a news article, generate a short Ukrainian headline. The lab c
 1. **Prepare the news data.** Load the prepared subset of `FIdo-AI/ua-news`, split it into training, validation, and test sets, and filter out texts repeated across splits. The notebook uses 3,000 validation examples and 500 test articles. Each record contains the original headline. During generation, the prompt ends at `Назва:` and the headline is held back for evaluation.
 2. **Establish a baseline.** Generate headlines with `benjamin/gpt2-large-wechsel-ukrainian` before fine-tuning and inspect whether they reflect the articles. GPT-2 generates one token at a time. Sampling temperature controls how strongly it favors the most likely next tokens.
 3. **Adapt GPT-2 with LoRA.** Freeze the base weights, attach rank-16 low-rank adapters with Hugging Face PEFT, and inspect how many parameters remain trainable. The assignment variants specify the training budget, learning-rate warmup, evaluation interval, and checkpoint schedule. Generate headlines with the adapted model at the assigned temperature.
-4. **Compare with a prompted model.** Send the same test articles to Qwen3-32B through the Groq API with a Ukrainian instruction to write a headline. The extension asks students to improve these generations. The Groq API key is needed for this experiment.
+4. **Compare with a prompted model.** Send the same test articles to Qwen3.8-27B through the Groq API with a Ukrainian instruction to write a headline. The extension asks students to improve these generations. The Groq API key is needed for this experiment.
 5. **Score both sets of headlines.** BERTScore uses `microsoft/mdeberta-v3-base` to compare contextual token representations in each generated headline and its reference. Precision measures how well the generated tokens match the reference, recall measures coverage in the other direction, and F1 combines the two. The notebook averages each metric over the test set.
 
 | Saved notebook results on 500 articles | BERTScore precision | Recall | F1 |
 | --- | ---: | ---: | ---: |
-| GPT-2 with LoRA | 0.620 | 0.697 | 0.655 |
-| Qwen3-32B via Groq | 0.659 | 0.663 | 0.660 |
+| GPT-2 with LoRA | 0.622 | 0.700 | 0.657 |
+| Qwen3-32B via Groq | 0.689 | 0.681 | 0.684 |
 
-**Run on Kaggle.** Enable internet access, select a GPU, and attach the prepared dataset at `/kaggle/input/fido-dataset`. To use the published model, complete the setup through section 2.2, skip section 2.3, and select the Hugging Face loading cell in section 3 for `NLPForUA/gpt2-large-uk-title-generation`. If you trained your own adapter, select the local checkpoint cell instead and point it to your checkpoint. [Prepared Kaggle dataset](https://www.kaggle.com/datasets/niksyromyatnikov/fido-dataset)
+**Run on Kaggle or Google Colab.** Select a GPU, and attach the prepared dataset. To use the published model, complete the setup through section 2.2, skip section 2.3, and select the Hugging Face loading cell in section 3 for `NLPForUA/gpt2-large-uk-title-generation`. If you trained your own adapter, select the local checkpoint cell instead and point it to your checkpoint. [Prepared Kaggle dataset](https://www.kaggle.com/datasets/niksyromyatnikov/fido-dataset)
 
 ## 3. Open-domain question answering in Ukrainian
 
